@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>송다마 - 마인크래프트 컨텐츠 아카이브</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #7ED321;
+            --dark-bg: #0a0a0a;
+            --card-bg: #141414;
+            --border-color: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --hover-bg: #1f1f1f;
+            --accent-red: #ff4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 100%);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .profile-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            border: 3px solid var(--primary-green);
+            box-shadow: 0 0 20px rgba(126, 211, 33, 0.3);
+            object-fit: cover;
+            background: var(--card-bg);
+        }
+
+        .logo-text h1 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-green);
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary-green);
+        }
+
+        .admin-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            font-family: 'Noto Sans KR', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .admin-btn:hover {
+            background: var(--primary-green);
+            color: var(--dark-bg);
+        }
+
+        .admin-btn.logged-in {
+            background: rgba(126, 211, 33, 0.1);
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+        }
+
+        .hero {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-green) 0%, #9fff4d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .content-type-tabs {
+            display: flex;
+            gap: 1rem;
+            margin: 3rem 0 2rem 0;
+            justify-content: center;
+        }
+
+        .content-type-tab {
+            padding: 1rem 2.5rem;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Chakra Petch', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .content-type-tab:hover {
+            border-color: var(--primary-green);
+        }
+
+        .content-type-tab.active {
+            background: var(--primary-green);
+            border-color: var(--primary-green);
+            color: var(--dark-bg);
+        }
+
+        .section-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 4rem 0 2rem 0;
+            padding-left: 1.5rem;
+            border-left: 4px solid var(--primary-green);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .add-btn {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-green);
+            border: none;
+            border-radius: 12px;
+            color: var(--dark-bg);
+            font-size: 2rem;
+            cursor: pointer;
+            display: none;
+            transition: all 0.3s;
+        }
+
+        .add-btn.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .video-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-green);
+            box-shadow: 0 15px 40px rgba(126, 211, 33, 0.15);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--hover-bg);
+            position: relative;
+        }
+
+        .video-card.shorts .video-thumbnail {
+            aspect-ratio: 9/16;
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .content-type-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--primary-green);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .delete-video-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 35px;
+            height: 35px;
+            background: var(--accent-red);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            z-index: 10;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-card:hover .delete-video-btn.show {
+            display: flex;
+        }
+
+        .video-info {
+            padding: 1.5rem;
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .video-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h2 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.8rem;
+            color: var(--primary-green);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            background: var(--dark-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .thumbnail-upload {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--dark-bg);
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thumbnail-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-secondary);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .thumbnail-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .thumbnail-preview.show {
+            display: block;
+        }
+
+        .remove-thumbnail {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 35px;
+            height: 35px;
+            background: var(--accent-red);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+        }
+
+        .remove-thumbnail.show {
+            display: block;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-green);
+            border: none;
+            border-radius: 8px;
+            color: var(--dark-bg);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #9fff4d;
+        }
+
+        footer {
+            background: var(--card-bg);
+            border-top: 2px solid var(--border-color);
+            padding: 3rem 0 2rem 0;
+            margin-top: 6rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .hero h2 { font-size: 2.5rem; }
+            .video-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="dama.png" alt="송다마" class="profile-img">
+                    <div class="logo-text">
+                        <h1>송다마</h1>
+                        <p>마인크래프트 컨텐츠 아카이브</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">홈</a></li>
+                        <li><a href="#videos">영상</a></li>
+                        <li><button class="admin-btn" id="adminBtn">관리자</button></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>마인크래프트의 모든 순간</h2>
+                <p>송다마의 마인크래프트 컨텐츠를 한곳에서 만나보세요</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="content-type-tabs">
+            <button class="content-type-tab active" data-type="all">전체</button>
+            <button class="content-type-tab" data-type="longform">롱폼</button>
+            <button class="content-type-tab" data-type="shorts">숏폼</button>
+        </div>
+
+        <h2 class="section-title">
+            <span>영상</span>
+            <button class="add-btn" id="addVideoBtn">+</button>
+        </h2>
+        
+        <div class="search-filter">
+            <div class="search-box">
+                <input type="text" placeholder="영상 검색..." id="searchInput">
+            </div>
+        </div>
+
+        <div class="video-grid" id="videoGrid"></div>
+    </div>
+
+    <!-- 관리자 로그인 모달 -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>관리자 로그인</h2>
+                <button class="close-btn" id="closeLogin">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>비밀번호</label>
+                <input type="password" id="adminPassword" placeholder="비밀번호 입력">
+            </div>
+            <button class="submit-btn" id="loginSubmit">로그인</button>
+        </div>
+    </div>
+
+    <!-- 영상 추가 모달 -->
+    <div class="modal" id="addVideoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>영상 추가</h2>
+                <button class="close-btn" id="closeVideo">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>콘텐츠 유형</label>
+                <select id="contentType">
+                    <option value="longform">롱폼</option>
+                    <option value="shorts">숏폼</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>썸네일 (드래그 또는 클릭하여 업로드, Ctrl+V 붙여넣기)</label>
+                <div class="thumbnail-upload" id="thumbnailUpload">
+                    <div class="thumbnail-placeholder" id="thumbnailPlaceholder">
+                        <p style="font-size: 1.1rem;">썸네일 업로드</p>
+                        <p style="font-size: 0.9rem;">클릭, 드래그 또는 Ctrl+V</p>
+                    </div>
+                    <img class="thumbnail-preview" id="thumbnailPreview">
+                    <button class="remove-thumbnail" id="removeThumbnail">×</button>
+                </div>
+                <input type="file" id="thumbnailFile" accept="image/*" style="display: none;">
+            </div>
+            <div class="form-group">
+                <label>유튜브 URL (선택)</label>
+                <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=...">
+            </div>
+            <div class="form-group">
+                <label>제목</label>
+                <input type="text" id="videoTitle" placeholder="영상 제목">
+            </div>
+            <div class="form-group">
+                <label>설명</label>
+                <textarea id="videoDescription" placeholder="영상 설명"></textarea>
+            </div>
+            <button class="submit-btn" id="videoSubmit">영상 추가</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 송다마. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 상태 변수
+        let isAdmin = false;
+        let videos = [];
+        let currentContentType = 'all';
+        let currentThumbnail = null;
+        const ADMIN_PASSWORD = 'damagood';
+
+        // 로컬 스토리지 초기화
+        function clearAllData() {
+            localStorage.removeItem('songdama_videos');
+            localStorage.removeItem('songdama_categories');
+            videos = [];
+            console.log('모든 데이터가 삭제되었습니다.');
+        }
+
+        // 로컬 스토리지
+        function loadData() {
+            const savedVideos = localStorage.getItem('songdama_videos');
+            if (savedVideos) videos = JSON.parse(savedVideos);
+        }
+
+        function saveData() {
+            localStorage.setItem('songdama_videos', JSON.stringify(videos));
+        }
+
+        // 유튜브 썸네일
+        function getYoutubeThumbnail(url) {
+            if (!url) return null;
+            const videoId = extractYoutubeId(url);
+            return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null;
+        }
+
+        function extractYoutubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        // 영상 렌더링
+        function renderVideos() {
+            const videoGrid = document.getElementById('videoGrid');
+            videoGrid.innerHTML = '';
+            
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filtered = videos.filter(v => {
+                const matchType = currentContentType === 'all' || v.contentType === currentContentType;
+                const matchSearch = v.title.toLowerCase().includes(searchTerm) || 
+                                  v.description.toLowerCase().includes(searchTerm);
+                return matchType && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                videoGrid.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1/-1; padding: 3rem;">등록된 영상이 없습니다.</p>';
+                return;
+            }
+
+            filtered.forEach(video => {
+                const thumbnail = video.customThumbnail || getYoutubeThumbnail(video.url);
+                const card = document.createElement('div');
+                card.className = `video-card ${video.contentType === 'shorts' ? 'shorts' : ''}`;
+                
+                card.innerHTML = `
+                    ${isAdmin ? `<button class="delete-video-btn show" data-video-id="${video.id}">×</button>` : ''}
+                    <div class="video-thumbnail">
+                        ${thumbnail ? `<img src="${thumbnail}" alt="${video.title}">` : ''}
+                        <span class="content-type-badge">${video.contentType === 'shorts' ? '숏폼' : '롱폼'}</span>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">${video.title}</h3>
+                        <p class="video-description">${video.description}</p>
+                    </div>
+                `;
+                
+                videoGrid.appendChild(card);
+            });
+            
+            // 렌더링 후 이벤트 리스너 등록
+            if (isAdmin) {
+                const deleteButtons = document.querySelectorAll('.delete-video-btn');
+                console.log('삭제 버튼 개수:', deleteButtons.length);
+                
+                deleteButtons.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        
+                        const videoId = parseInt(this.getAttribute('data-video-id'));
+                        console.log('=== 삭제 버튼 클릭 ===');
+                        console.log('비디오 ID:', videoId);
+                        
+                        const beforeCount = videos.length;
+                        videos = videos.filter(v => v.id !== videoId);
+                        const afterCount = videos.length;
+                        
+                        console.log('삭제 전 개수:', beforeCount);
+                        console.log('삭제 후 개수:', afterCount);
+                        
+                        saveData();
+                        renderVideos();
+                        console.log('✓ 삭제 완료');
+                    });
+                });
+            }
+            
+            // 카드 클릭 이벤트
+            document.querySelectorAll('.video-card').forEach((card, index) => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('delete-video-btn')) {
+                        return;
+                    }
+                    const video = filtered[index];
+                    if (video.url && video.url !== '#') {
+                        window.open(video.url, '_blank');
+                    }
+                });
+            });
+        }
+
+        // 썸네일 관련
+        function displayThumbnail(src) {
+            const preview = document.getElementById('thumbnailPreview');
+            const placeholder = document.getElementById('thumbnailPlaceholder');
+            const removeBtn = document.getElementById('removeThumbnail');
+            
+            preview.src = src;
+            preview.classList.add('show');
+            placeholder.style.display = 'none';
+            removeBtn.classList.add('show');
+            currentThumbnail = src;
+        }
+
+        function removeThumbnailPreview() {
+            const preview = document.getElementById('thumbnailPreview');
+            const placeholder = document.getElementById('thumbnailPlaceholder');
+            const removeBtn = document.getElementById('removeThumbnail');
+            
+            preview.classList.remove('show');
+            preview.src = '';
+            placeholder.style.display = 'flex';
+            removeBtn.classList.remove('show');
+            currentThumbnail = null;
+            document.getElementById('thumbnailFile').value = '';
+        }
+
+        // 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            renderVideos();
+            
+            // 관리자 버튼
+            document.getElementById('adminBtn').addEventListener('click', () => {
+                if (isAdmin) {
+                    isAdmin = false;
+                    document.getElementById('adminBtn').classList.remove('logged-in');
+                    document.getElementById('adminBtn').textContent = '관리자';
+                    document.getElementById('addVideoBtn').classList.remove('show');
+                    renderVideos();
+                } else {
+                    document.getElementById('loginModal').classList.add('show');
+                }
+            });
+            
+            // 로그인
+            document.getElementById('loginSubmit').addEventListener('click', () => {
+                const password = document.getElementById('adminPassword').value;
+                if (password === ADMIN_PASSWORD) {
+                    isAdmin = true;
+                    document.getElementById('adminBtn').classList.add('logged-in');
+                    document.getElementById('adminBtn').textContent = '로그아웃';
+                    document.getElementById('addVideoBtn').classList.add('show');
+                    document.getElementById('loginModal').classList.remove('show');
+                    document.getElementById('adminPassword').value = '';
+                    renderVideos();
+                    alert('관리자 로그인 성공!');
+                } else {
+                    alert('비밀번호가 올바르지 않습니다.');
+                }
+            });
+            
+            document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') document.getElementById('loginSubmit').click();
+            });
+            
+            // 콘텐츠 타입 탭
+            document.querySelectorAll('.content-type-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.content-type-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentContentType = tab.getAttribute('data-type');
+                    renderVideos();
+                });
+            });
+            
+            // 영상 추가 버튼
+            document.getElementById('addVideoBtn').addEventListener('click', () => {
+                document.getElementById('addVideoModal').classList.add('show');
+            });
+            
+            // 영상 추가
+            document.getElementById('videoSubmit').addEventListener('click', () => {
+                const title = document.getElementById('videoTitle').value.trim();
+                const description = document.getElementById('videoDescription').value.trim();
+                const contentType = document.getElementById('contentType').value;
+                const url = document.getElementById('videoUrl').value.trim();
+                
+                if (!title || !description) {
+                    alert('제목과 설명은 필수입니다.');
+                    return;
+                }
+                
+                if (!currentThumbnail) {
+                    alert('썸네일을 업로드해주세요.');
+                    return;
+                }
+                
+                videos.unshift({
+                    id: Date.now(),
+                    title,
+                    description,
+                    contentType,
+                    url: url || '#',
+                    customThumbnail: currentThumbnail,
+                    date: new Date().toISOString()
+                });
+                
+                saveData();
+                renderVideos();
+                document.getElementById('addVideoModal').classList.remove('show');
+                document.getElementById('videoTitle').value = '';
+                document.getElementById('videoDescription').value = '';
+                document.getElementById('videoUrl').value = '';
+                removeThumbnailPreview();
+                alert('영상이 추가되었습니다!');
+            });
+            
+            // 모달 닫기
+            document.getElementById('closeLogin').addEventListener('click', () => {
+                document.getElementById('loginModal').classList.remove('show');
+            });
+            document.getElementById('closeVideo').addEventListener('click', () => {
+                document.getElementById('addVideoModal').classList.remove('show');
+            });
+            
+            // 썸네일 업로드
+            const uploadArea = document.getElementById('thumbnailUpload');
+            const fileInput = document.getElementById('thumbnailFile');
+            
+            uploadArea.addEventListener('click', () => fileInput.click());
+            
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => displayThumbnail(e.target.result);
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--primary-green)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = 'var(--border-color)';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--border-color)';
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => displayThumbnail(e.target.result);
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            document.getElementById('removeThumbnail').addEventListener('click', (e) => {
+                e.stopPropagation();
+                removeThumbnailPreview();
+            });
+            
+            // Ctrl+V 붙여넣기
+            document.getElementById('addVideoModal').addEventListener('paste', (e) => {
+                const items = e.clipboardData.items;
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].type.indexOf('image') !== -1) {
+                        const blob = items[i].getAsFile();
+                        const reader = new FileReader();
+                        reader.onload = (e) => displayThumbnail(e.target.result);
+                        reader.readAsDataURL(blob);
+                        break;
+                    }
+                }
+            });
+            
+            // 검색
+            document.getElementById('searchInput').addEventListener('input', renderVideos);
+        });
+    </script>
+</body>
+</html>
